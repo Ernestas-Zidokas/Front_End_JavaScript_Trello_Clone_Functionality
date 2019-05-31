@@ -1,9 +1,9 @@
-let addList = false;
 const columns = document.querySelector('#columns');
 let data = [];
 let draggableCardObject = null;
 let draggableCardIndex = -1;
-let dragggableListIndex = -1;
+let draggableListIndex = -1;
+let draggedOverCardIndex = -1;
 
 window.addEventListener('load', event => {
   render();
@@ -101,11 +101,11 @@ function createList(title, listIndex) {
   });
 
   list.addEventListener('drop', event => {
-    console.log(event);
-    data[listIndex].cards.push(draggableCardObject);
-    data[dragggableListIndex].cards.splice(draggableCardIndex, 1);
+    data[draggableListIndex].cards.splice(draggableCardIndex, 1);
+    data[listIndex].cards.splice(draggedOverCardIndex, 0, draggableCardObject);
     resetVariables();
     console.log(data);
+
     window.localStorage.setItem('columns', JSON.stringify(data));
     render();
   });
@@ -148,7 +148,6 @@ function createCardInput(listIndex) {
   addCardButton.addEventListener('click', event => {
     data[listIndex].cards.push({
       text: cardInput.value,
-      isDragging: false,
     });
     window.localStorage.setItem('columns', JSON.stringify(data));
     render();
@@ -178,7 +177,11 @@ function createCard(cardData, cardIndex, listIndex) {
   card.addEventListener('drag', event => {
     draggableCardObject = cardData;
     draggableCardIndex = cardIndex;
-    dragggableListIndex = listIndex;
+    draggableListIndex = listIndex;
+  });
+  card.addEventListener('dragover', event => {
+    draggedOverCardIndex = cardIndex;
+    console.log('dragover', cardIndex);
   });
   return card;
 }
@@ -201,5 +204,6 @@ function clearColumns() {
 function resetVariables() {
   draggableCardObject = null;
   draggableCardIndex = -1;
-  dragggableListIndex = -1;
+  draggableListIndex = -1;
+  draggedOverCardIndex = -1;
 }

@@ -100,11 +100,6 @@ function createList(title, listIndex) {
     if (startListIndex !== listIndex) {
       finishListIndex = listIndex;
     }
-    // console.log(document.querySelector);
-
-    // if (!document.querySelector('.cardSpace')) {
-    //   event.target.appendChild(createCardSpace());
-    // }
   });
 
   list.addEventListener('dragenter', event => {
@@ -129,12 +124,7 @@ function createList(title, listIndex) {
       data[listIndex].cards.splice(finishCardIndex, 0, startCardObject);
     }
 
-    // if (finishListIndex == -1 && finishCardIndex == -1) {
-    //   console.log(startCardIndex);
-    // }
-
     resetVariables();
-    console.log(data);
     window.localStorage.setItem('columns', JSON.stringify(data));
     render();
   });
@@ -209,16 +199,28 @@ function createCard(cardData, cardIndex, listIndex) {
     startListIndex = listIndex;
   });
   card.addEventListener('dragover', event => {
-    // console.log({ listIndex, startListIndex, cardIndex, startCardIndex });
     if (cardIndex !== startCardIndex) {
       finishCardIndex = cardIndex;
     }
 
-    // if (listIndex !== startListIndex && cardIndex !== startCardIndex) {
-
-    //   console.log('praejo');
-    // }
+    if (!document.querySelector('.cardSpace')) {
+      card.parentNode.insertBefore(createCardSpace(), card);
+    }
   });
+
+  card.addEventListener('dragenter', event => {
+    event.preventDefault();
+    if (document.querySelector('.cardSpace')) {
+      document
+        .querySelector('.cardSpace')
+        .parentNode.removeChild(document.querySelector('.cardSpace'));
+    }
+  });
+
+  card.addEventListener('dragleave', event => {
+    event.preventDefault();
+  });
+
   return card;
 }
 

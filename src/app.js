@@ -24,11 +24,37 @@ function render() {
       column.cards.forEach((card, cardIndex) => {
         cardContainer.appendChild(createCard(card, cardIndex, listIndex));
       });
+
+      cardContainer.appendChild(addCardButton(listIndex));
       list.appendChild(cardContainer);
     });
   }
 
   createAddAnotherListButton();
+}
+
+function addCardButton(listIndex) {
+  let addCardButton = createElement('button', {
+    type: 'button',
+    textContent: '+ Add another card',
+    className: 'addCardBottom',
+  });
+
+  addCardButton.addEventListener('click', event => {
+    addCardButton.parentNode.appendChild(createCardInput(listIndex));
+    addCardButton.parentNode.removeChild(addCardButton);
+  });
+
+  addCardButton.addEventListener('dragover', event => {
+    if (document.querySelector('.cardSpace')) {
+      document
+        .querySelector('.cardSpace')
+        .parentNode.removeChild(document.querySelector('.cardSpace'));
+      addCardButton.parentNode.insertBefore(createCardSpace(), addCardButton);
+    }
+  });
+
+  return addCardButton;
 }
 
 function createAddAnotherListButton() {
@@ -52,7 +78,8 @@ function createListInput() {
 
   let listTitle = createElement('input', {
     type: 'text',
-    placeholder: 'Enter List Title',
+    placeholder: 'Enter list title',
+    className: 'listTitleInput',
   });
 
   list.appendChild(listTitle);
@@ -64,6 +91,7 @@ function createListInput() {
   let addListButton = createElement('button', {
     type: 'button',
     textContent: 'Add List',
+    className: 'button',
   });
   addListButton.addEventListener('click', event => {
     data.push({
@@ -78,7 +106,8 @@ function createListInput() {
 
   let exitListButton = createElement('button', {
     type: 'button',
-    textContent: 'x',
+    textContent: 'X',
+    className: 'exitButton',
   });
   exitListButton.addEventListener('click', event => {
     columns.removeChild(list);
@@ -118,11 +147,6 @@ function createList(title, listIndex) {
 
   titleContainer.addEventListener('dragenter', event => {
     event.preventDefault();
-    // if (document.querySelector('.cardSpace')) {
-    //   document
-    //     .querySelector('.cardSpace')
-    //     .parentNode.removeChild(document.querySelector('.cardSpace'));
-    // }
   });
 
   list.addEventListener('dragenter', event => {
@@ -159,16 +183,16 @@ function createList(title, listIndex) {
 
   titleContainer.appendChild(listTitle);
 
-  let addListButton = createElement('button', {
-    type: 'button',
-    textContent: 'Add Card',
-  });
-  addListButton.addEventListener('click', event => {
-    list.removeChild(addListButton);
-    list.appendChild(createCardInput(listIndex));
-  });
+  // let addListButton = createElement('button', {
+  //   type: 'button',
+  //   textContent: 'Add Card',
+  // });
+  // addListButton.addEventListener('click', event => {
+  //   titleContainer.removeChild(addListButton);
+  //   titleContainer.appendChild(createCardInput(listIndex));
+  // });
 
-  titleContainer.appendChild(addListButton);
+  // titleContainer.appendChild(addListButton);
   list.appendChild(titleContainer);
 
   return list;
@@ -176,9 +200,10 @@ function createList(title, listIndex) {
 
 function createCardInput(listIndex) {
   let card = createElement('div');
-  let cardInput = createElement('input', {
+  let cardInput = createElement('textarea', {
     type: 'text',
     placeholder: 'Enter text for this card',
+    className: 'cardInput',
   });
   let cardButtons = createElement('div', {
     className: 'cardButtons',
@@ -187,6 +212,7 @@ function createCardInput(listIndex) {
   let addCardButton = createElement('button', {
     type: 'button',
     textContent: 'Add Card',
+    className: 'button',
   });
   addCardButton.addEventListener('click', event => {
     data[listIndex].cards.push({
@@ -199,7 +225,8 @@ function createCardInput(listIndex) {
 
   let exitCardButton = createElement('button', {
     type: 'button',
-    textContent: 'x',
+    textContent: 'X',
+    className: 'exitButton',
   });
   exitCardButton.addEventListener('click', event => {
     render();
@@ -231,8 +258,20 @@ function createCard(cardData, cardIndex, listIndex) {
   });
 
   card.addEventListener('dragover', event => {
+    if (document.querySelector('.cardSpace')) {
+      document
+        .querySelector('.cardSpace')
+        .parentNode.removeChild(document.querySelector('.cardSpace'));
+    }
+
     if (cardIndex !== startCardIndex || listIndex !== startListIndex) {
-      finishCardIndex = cardIndex;
+      // finishCardIndex = cardIndex;
+      if (document.querySelector('.cardShadow')) {
+        document
+          .querySelector('.cardShadow')
+          .parentNode.removeChild(document.querySelector('.cardShadow'));
+      }
+
       if (!document.querySelector('.cardSpace')) {
         let cardSpace = createCardSpace();
         cardSpace.addEventListener('dragover', event => {
@@ -240,31 +279,13 @@ function createCard(cardData, cardIndex, listIndex) {
             finishCardIndex = cardIndex;
           }
         });
-        if (document.querySelector('.cardShadow')) {
-          document
-            .querySelector('.cardShadow')
-            .parentNode.removeChild(document.querySelector('.cardShadow'));
-        }
-        console.log(finishCardIndex);
-
-        if (data[listIndex].cards.length - 1 !== cardIndex) {
-          card.parentNode.insertBefore(cardSpace, card);
-          console.log('before');
-        } else {
-          card.parentNode.insertBefore(cardSpace, card.nextSibling);
-          console.log('after');
-        }
+        card.parentNode.insertBefore(cardSpace, card);
       }
     }
   });
 
   card.addEventListener('dragenter', event => {
     event.preventDefault();
-    if (document.querySelector('.cardSpace')) {
-      document
-        .querySelector('.cardSpace')
-        .parentNode.removeChild(document.querySelector('.cardSpace'));
-    }
   });
 
   card.addEventListener('dragleave', event => {

@@ -1,0 +1,23 @@
+{
+  "name": "Trello Clone",
+  "version": "1.0.0",
+  "description": "JS Learning Trello funcionality",
+  "scripts": {
+    "clean": "rm -rf public build dist",
+    "build": "npm run clean && parcel build ./src/index.html --out-dir build --public-url ./ --no-source-maps",
+    "dev": "npm run clean && parcel ./src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Katamaranas/Front_End_JavaScript_Trello_Clone_Functionality"
+  },
+  "author": "Ernestas Židokas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Katamaranas/Front_End_JavaScript_Trello_Clone_Functionality/issues"
+  },
+  "homepage": "https://github.com/Katamaranas/Front_End_JavaScript_Trello_Clone_Functionality",
+  "devDependencies": {
+    "parcel": "^1.12.3"
+  }
+}

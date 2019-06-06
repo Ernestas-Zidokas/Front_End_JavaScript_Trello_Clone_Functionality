@@ -1,0 +1,180 @@
+body {
+  background-image: url('images/waves.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#columns {
+  display: flex;
+  align-items: flex-start;
+}
+
+.addAnotherListButton {
+  text-align: left;
+  width: 272px;
+  height: 30px;
+  padding: 6px 8px 6px;
+  background-color: rgba(0, 0, 0, 0.24);
+  color: hsla(0, 0%, 100%, 0.8);
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  opacity: 0.8;
+}
+.list,
+.listInput {
+  background-color: #dfe1e6;
+  margin-right: 10px;
+  width: 272px;
+  border-radius: 3px;
+}
+
+.listTitleInput {
+  border: none;
+  box-shadow: inset 0 0 0 2px #0079bf;
+  display: block;
+  margin: 0;
+}
+
+.cardInput {
+  overflow: hidden;
+  overflow-wrap: break-word;
+  resize: none;
+  height: 54px;
+  padding: 6px 8px 6px;
+  margin: 5px;
+  background-color: #fff;
+  color: #172b4d;
+  width: 240px;
+  border-radius: 5px;
+  border: none;
+}
+
+.cardInput:focus {
+  outline: none;
+}
+
+.listButtons {
+  display: flex;
+}
+
+.cardContainer {
+  margin: 0 4px;
+  z-index: 1;
+  min-height: 0;
+  margin-top: 10px;
+}
+
+.titleContainer {
+  margin: 0 4px;
+  z-index: 1;
+  min-height: 0;
+  margin-top: 10px;
+}
+
+.titleContainer h4 {
+  margin-left: 5px;
+}
+
+.button {
+  margin-left: 5px;
+  margin-right: 5px;
+  background-color: #5aac44;
+  box-shadow: 0 1px 0 0 #3f6f21;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  line-height: 20px;
+  padding: 4px 8px;
+  text-align: center;
+  border-radius: 3px;
+  margin-bottom: 5px;
+}
+
+.button:hover {
+  background-color: #519839;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.exitButton {
+  background-color: inherit;
+  border: none;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  color: #6b778c;
+}
+
+.exitButton:hover {
+  color: #172b4d;
+}
+
+.listTitleInput {
+  width: 240px;
+  margin-left: 5px;
+  margin-top: 5px;
+  color: #172b4d;
+  border-radius: 3px;
+  line-height: 20px;
+  margin-bottom: 12px;
+  padding: 4px 12px;
+}
+
+.card {
+  height: 15px;
+  padding: 6px 8px 6px;
+  margin: 5px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  color: #172b4d;
+  width: 240px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.addCardBottom {
+  text-align: left;
+  border-radius: 0 0 3px 3px;
+  color: #6b778c;
+  background-color: inherit;
+  padding: 6px 8px 6px;
+  margin: 5px;
+  border: none;
+  cursor: pointer;
+  display: block;
+  width: 255px;
+}
+
+.addCardBottom:focus {
+  outline: none;
+}
+
+.addCardBottom:hover {
+  background-color: rgba(9, 30, 66, 0.13);
+}
+
+.cardRotate {
+  transform: rotate(3deg);
+}
+
+.cardSpace,
+.cardShadow {
+  height: 20px;
+  padding: 6px 8px 2px;
+  margin: 5px;
+  background-color: rgba(255, 255, 240, 0.424);
+  width: 240px;
+  border-radius: 5px;
+}
+
+.cardShadow {
+  background-color: purple;
+}
+
+.cardButtons {
+  display: flex;
+}

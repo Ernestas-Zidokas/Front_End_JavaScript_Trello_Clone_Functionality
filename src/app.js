@@ -5,6 +5,7 @@ let startCardIndex = -1;
 let startListIndex = -1;
 let finishCardIndex = -1;
 let finishListIndex = -1;
+let modalOpen = false;
 
 window.addEventListener('load', event => {
   render();
@@ -106,7 +107,7 @@ function createListInput() {
 
   let exitListButton = createElement('button', {
     type: 'button',
-    textContent: 'X',
+    textContent: '✖️',
     className: 'exitButton',
   });
   exitListButton.addEventListener('click', event => {
@@ -124,6 +125,20 @@ function createList(title, listIndex) {
     className: 'list',
   });
 
+  let deleteListButton = createElement('button', {
+    type: 'button',
+    className: 'deleteListButton exitButton',
+    textContent: '✖️',
+  });
+
+  deleteListButton.addEventListener('click', event => {
+    data.splice(listIndex, 1);
+    window.localStorage.setItem('columns', JSON.stringify(data));
+    render();
+  });
+
+  list.appendChild(deleteListButton);
+
   let titleContainer = createElement('div', { className: 'titleContainer' });
 
   titleContainer.addEventListener('dragover', event => {
@@ -134,7 +149,7 @@ function createList(title, listIndex) {
           .querySelector('.cardSpace')
           .parentNode.removeChild(document.querySelector('.cardSpace'));
       }
-      list.lastChild.appendChild(createCardSpace());
+      list.lastChild.insertBefore(createCardSpace(), list.lastChild.lastChild);
     }
   });
 
@@ -217,6 +232,7 @@ function createCardInput(listIndex) {
   addCardButton.addEventListener('click', event => {
     data[listIndex].cards.push({
       text: cardInput.value,
+      isEdit: false,
     });
     window.localStorage.setItem('columns', JSON.stringify(data));
     render();
@@ -225,7 +241,7 @@ function createCardInput(listIndex) {
 
   let exitCardButton = createElement('button', {
     type: 'button',
-    textContent: 'X',
+    textContent: '✖️',
     className: 'exitButton',
   });
   exitCardButton.addEventListener('click', event => {
@@ -239,11 +255,38 @@ function createCardInput(listIndex) {
 }
 
 function createCard(cardData, cardIndex, listIndex) {
-  let card = createElement('p', {
-    textContent: cardData.text,
-    className: 'card',
-    draggable: true,
+  let card = null;
+  if (data[listIndex].cards[cardIndex].isEdit) {
+    card = createElement('input', {
+      value: cardData.text,
+      className: 'card',
+      draggable: true,
+    });
+  } else {
+    card = createElement('p', {
+      textContent: cardData.text,
+      className: 'card',
+      draggable: true,
+    });
+  }
+
+  let moreCardButton = createElement('button', {
+    type: 'button',
+    className: 'moreCardButton exitButton',
+    textContent: '⚪⚪⚪',
   });
+
+  moreCardButton.addEventListener('click', event => {
+    modalOpen = !modalOpen;
+    let moreModalDiv = moreModal(listIndex, cardIndex);
+    if (modalOpen) {
+      card.appendChild(moreModalDiv);
+    } else {
+      render();
+    }
+  });
+
+  card.appendChild(moreCardButton);
 
   card.addEventListener('drag', event => {
     startCardObject = cardData;
@@ -323,4 +366,34 @@ function resetVariables() {
   startListIndex = -1;
   finishCardIndex = -1;
   finishListIndex = -1;
+}
+
+function moreModal(listIndex, cardIndex) {
+  let moreModal = createElement('div', { className: 'moreModal' });
+  let editCardButton = createElement('button', {
+    className: 'editButton',
+    textContent: '✏️',
+    type: 'button',
+  });
+
+  editCardButton.addEventListener('click', event => {
+    // data[listIndex].cards[cardIndex].isEdit = !data[listIndex].cards[cardIndex].isEdit;
+    console.log('edit');
+  });
+
+  let deleteCardButton = createElement('button', {
+    className: 'deleteButton',
+    textContent: '✖️',
+    type: 'button',
+  });
+
+  deleteCardButton.addEventListener('click', event => {
+    data[listIndex].cards.splice(cardIndex, 1);
+    window.localStorage.setItem('columns', JSON.stringify(data));
+    render();
+  });
+
+  moreModal.appendChild(editCardButton);
+  moreModal.appendChild(deleteCardButton);
+  return moreModal;
 }

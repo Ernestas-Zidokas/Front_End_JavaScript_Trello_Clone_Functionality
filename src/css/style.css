@@ -208,6 +208,8 @@ body {
   display: none;
   font-size: 6px;
   cursor: pointer;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 
 .moreModal {
@@ -221,6 +223,7 @@ body {
   background: transparent;
   border: none;
   cursor: pointer;
+  font-size: 10px;
 }
 
 .moreModal button:focus {

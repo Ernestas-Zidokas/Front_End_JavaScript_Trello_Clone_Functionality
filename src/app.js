@@ -5,7 +5,6 @@ let startCardIndex = -1;
 let startListIndex = -1;
 let finishCardIndex = -1;
 let finishListIndex = -1;
-let modalOpen = false;
 
 window.addEventListener('load', event => {
   render();
@@ -197,17 +196,6 @@ function createList(title, listIndex) {
   });
 
   titleContainer.appendChild(listTitle);
-
-  // let addListButton = createElement('button', {
-  //   type: 'button',
-  //   textContent: 'Add Card',
-  // });
-  // addListButton.addEventListener('click', event => {
-  //   titleContainer.removeChild(addListButton);
-  //   titleContainer.appendChild(createCardInput(listIndex));
-  // });
-
-  // titleContainer.appendChild(addListButton);
   list.appendChild(titleContainer);
 
   return list;
@@ -232,6 +220,7 @@ function createCardInput(listIndex) {
   addCardButton.addEventListener('click', event => {
     data[listIndex].cards.push({
       text: cardInput.value,
+      isModalOpen: false,
       isEdit: false,
     });
     window.localStorage.setItem('columns', JSON.stringify(data));
@@ -262,6 +251,16 @@ function createCard(cardData, cardIndex, listIndex) {
       className: 'card',
       draggable: true,
     });
+    card.addEventListener('keypress', event => {
+      if (event.keyCode === 13) {
+        data[listIndex].cards[cardIndex].text = card.value;
+        data[listIndex].cards[cardIndex].isModalOpen = !data[listIndex].cards[cardIndex]
+          .isModalOpen;
+        data[listIndex].cards[cardIndex].isEdit = !data[listIndex].cards[cardIndex].isEdit;
+        window.localStorage.setItem('columns', JSON.stringify(data));
+        render();
+      }
+    });
   } else {
     card = createElement('p', {
       textContent: cardData.text,
@@ -277,15 +276,16 @@ function createCard(cardData, cardIndex, listIndex) {
   });
 
   moreCardButton.addEventListener('click', event => {
-    modalOpen = !modalOpen;
+    data[listIndex].cards[cardIndex].isModalOpen = !data[listIndex].cards[cardIndex].isModalOpen;
     let moreModalDiv = moreModal(listIndex, cardIndex);
-    if (modalOpen) {
+    if (data[listIndex].cards[cardIndex].isModalOpen) {
       card.appendChild(moreModalDiv);
     } else {
-      render();
+      if (card.querySelector('.moreModal')) {
+        card.removeChild(card.querySelector('.moreModal'));
+      }
     }
   });
-
   card.appendChild(moreCardButton);
 
   card.addEventListener('drag', event => {
@@ -308,7 +308,6 @@ function createCard(cardData, cardIndex, listIndex) {
     }
 
     if (cardIndex !== startCardIndex || listIndex !== startListIndex) {
-      // finishCardIndex = cardIndex;
       if (document.querySelector('.cardShadow')) {
         document
           .querySelector('.cardShadow')
@@ -377,8 +376,9 @@ function moreModal(listIndex, cardIndex) {
   });
 
   editCardButton.addEventListener('click', event => {
-    // data[listIndex].cards[cardIndex].isEdit = !data[listIndex].cards[cardIndex].isEdit;
-    console.log('edit');
+    data[listIndex].cards[cardIndex].isEdit = !data[listIndex].cards[cardIndex].isEdit;
+    window.localStorage.setItem('columns', JSON.stringify(data));
+    render();
   });
 
   let deleteCardButton = createElement('button', {

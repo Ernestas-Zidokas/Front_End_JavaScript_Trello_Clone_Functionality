@@ -4,12 +4,6 @@ const createElement = dataController.createElement;
 
 function List(title, listIndex, render) {
   let data = dataController.getData();
-  let startCardObject = dataController.getStartCardObject();
-  let startCardIndex = dataController.getStartCardIndex();
-  let startListIndex = dataController.getStartListIndex();
-  let finishCardIndex = dataController.getFinishCardIndex();
-  let finishListIndex = dataController.getFinishListIndex();
-
   let list = createElement('div', {
     className: 'list',
   });
@@ -23,7 +17,6 @@ function List(title, listIndex, render) {
   deleteListButton.addEventListener('click', event => {
     data.splice(listIndex, 1);
     dataController.setData(data);
-    // window.localStorage.setItem('columns', JSON.stringify(data));
     render();
   });
 
@@ -33,7 +26,7 @@ function List(title, listIndex, render) {
 
   titleContainer.addEventListener('dragover', event => {
     event.preventDefault();
-    if (finishCardIndex == -1) {
+    if (dataController.getFinishCardIndex() == -1) {
       if (document.querySelector('.cardSpace')) {
         document
           .querySelector('.cardSpace')
@@ -45,8 +38,8 @@ function List(title, listIndex, render) {
 
   list.addEventListener('dragover', event => {
     event.preventDefault();
-    if (startListIndex !== listIndex) {
-      finishListIndex = listIndex;
+    if (dataController.getStartListIndex() !== listIndex) {
+      dataController.setFinishListIndex(listIndex);
     }
   });
 
@@ -63,26 +56,27 @@ function List(title, listIndex, render) {
   });
 
   list.addEventListener('drop', event => {
-    console.log('startCardObject', startCardObject);
-    console.log('startCardIndex', startCardIndex);
-    console.log('startListIndex', startListIndex);
-    console.log('finishCardIndex', finishCardIndex);
-    console.log('finishListIndex', finishListIndex);
-    if (finishListIndex > -1 && finishCardIndex > -1) {
-      data[startListIndex].cards.splice(startCardIndex, 1);
-      data[listIndex].cards.splice(finishCardIndex, 0, startCardObject);
+    if (dataController.getFinishListIndex() > -1 && dataController.getFinishCardIndex() > -1) {
+      data[dataController.getStartListIndex()].cards.splice(dataController.getStartCardIndex(), 1);
+      data[listIndex].cards.splice(
+        dataController.getFinishCardIndex(),
+        0,
+        dataController.getStartCardObject(),
+      );
     }
-    if (finishListIndex > -1 && finishCardIndex == -1) {
-      console.log(data);
-      data[startListIndex].cards.splice(startCardIndex, 1);
-      data[listIndex].cards.push(startCardObject);
+    if (dataController.getFinishListIndex() > -1 && dataController.getFinishCardIndex() == -1) {
+      data[dataController.getStartListIndex()].cards.splice(dataController.getStartCardIndex(), 1);
+      data[listIndex].cards.push(dataController.getStartCardObject());
     }
-    if (finishListIndex == -1 && finishCardIndex > -1) {
-      data[startListIndex].cards.splice(startCardIndex, 1);
-      data[listIndex].cards.splice(finishCardIndex, 0, startCardObject);
+    if (dataController.getFinishListIndex() == -1 && dataController.getFinishCardIndex() > -1) {
+      data[dataController.getStartListIndex()].cards.splice(dataController.getStartCardIndex(), 1);
+      data[listIndex].cards.splice(
+        dataController.getFinishCardIndex() - 1,
+        0,
+        dataController.getStartCardObject(),
+      );
     }
     dataController.resetVariables();
-    // window.localStorage.setItem('columns', JSON.stringify(data));
     dataController.setData(data);
     render();
   });

@@ -24,7 +24,6 @@ function CardInput(listIndex, render) {
       isModalOpen: false,
       isEdit: false,
     });
-    // window.localStorage.setItem('columns', JSON.stringify(data));
     dataController.setData(data);
     render();
   });

@@ -32,7 +32,6 @@ function ListInput(render) {
     });
     columns.removeChild(list);
     dataController.setData(data);
-    // window.localStorage.setItem('columns', JSON.stringify(data));
     render();
   });
   listButtons.appendChild(addListButton);

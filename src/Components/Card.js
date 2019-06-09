@@ -4,9 +4,6 @@ const moreModalFunction = require('../Components/MoreModal');
 const createElement = dataController.createElement;
 
 function Card(cardData, cardIndex, listIndex, render) {
-  let startCardIndex = dataController.getStartCardIndex();
-  let startListIndex = dataController.getStartListIndex();
-  let finishCardIndex = dataController.getFinishCardIndex();
   let data = dataController.getData();
 
   let card = null;
@@ -22,10 +19,7 @@ function Card(cardData, cardIndex, listIndex, render) {
         data[listIndex].cards[cardIndex].isModalOpen = !data[listIndex].cards[cardIndex]
           .isModalOpen;
         data[listIndex].cards[cardIndex].isEdit = !data[listIndex].cards[cardIndex].isEdit;
-
-        // updateCard(listIndex, cardIndex, { text: card.value,  })
         dataController.setData(data);
-        // window.localStorage.setItem('columns', JSON.stringify(data));
         render();
       }
     });
@@ -75,7 +69,10 @@ function Card(cardData, cardIndex, listIndex, render) {
         .parentNode.removeChild(document.querySelector('.cardSpace'));
     }
 
-    if (cardIndex !== startCardIndex || listIndex !== startListIndex) {
+    if (
+      cardIndex !== dataController.getStartCardIndex() ||
+      listIndex !== dataController.getStartListIndex()
+    ) {
       if (document.querySelector('.cardShadow')) {
         document
           .querySelector('.cardShadow')
@@ -85,7 +82,10 @@ function Card(cardData, cardIndex, listIndex, render) {
       if (!document.querySelector('.cardSpace')) {
         let cardSpace = cardSpaceFunction();
         cardSpace.addEventListener('dragover', event => {
-          if (cardIndex !== startCardIndex || listIndex !== startListIndex) {
+          if (
+            cardIndex !== dataController.getStartCardIndex() ||
+            listIndex !== dataController.getStartListIndex()
+          ) {
             dataController.setFinishCardIndex(cardIndex);
           }
         });
@@ -100,7 +100,7 @@ function Card(cardData, cardIndex, listIndex, render) {
 
   card.addEventListener('dragleave', event => {
     event.preventDefault();
-    if (cardIndex == finishCardIndex) {
+    if (cardIndex == dataController.getFinishCardIndex()) {
       dataController.setFinishCardIndex(-1);
     }
   });

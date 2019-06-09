@@ -12,7 +12,6 @@ function MoreModal(listIndex, cardIndex, render) {
 
   editCardButton.addEventListener('click', event => {
     data[listIndex].cards[cardIndex].isEdit = !data[listIndex].cards[cardIndex].isEdit;
-    // window.localStorage.setItem('columns', JSON.stringify(data));
     dataController.setData(data);
     render();
   });
@@ -25,7 +24,6 @@ function MoreModal(listIndex, cardIndex, render) {
 
   deleteCardButton.addEventListener('click', event => {
     data[listIndex].cards.splice(cardIndex, 1);
-    // window.localStorage.setItem('columns', JSON.stringify(data));
     dataController.setData(data);
     render();
   });

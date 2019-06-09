@@ -24,11 +24,11 @@ const setFinishCardIndex = finishCard => (finishCardIndex = finishCard);
 const setFinishListIndex = finishList => (finishListIndex = finishList);
 
 function resetVariables() {
-  startCardObject = null;
-  startCardIndex = -1;
-  startListIndex = -1;
-  finishCardIndex = -1;
-  finishListIndex = -1;
+  setStartCardObject(null);
+  setStartCardIndex(-1);
+  setStartListIndex(-1);
+  setFinishCardIndex(-1);
+  setFinishListIndex(-1);
 }
 
 function createElement(type, params) {

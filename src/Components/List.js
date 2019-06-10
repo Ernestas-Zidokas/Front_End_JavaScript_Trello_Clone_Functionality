@@ -71,7 +71,7 @@ function List(title, listIndex, render) {
     if (dataController.getFinishListIndex() == -1 && dataController.getFinishCardIndex() > -1) {
       data[dataController.getStartListIndex()].cards.splice(dataController.getStartCardIndex(), 1);
       data[listIndex].cards.splice(
-        dataController.getFinishCardIndex() - 1,
+        dataController.getFinishCardIndex(),
         0,
         dataController.getStartCardObject(),
       );

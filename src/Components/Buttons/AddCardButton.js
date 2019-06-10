@@ -21,7 +21,11 @@ function addCardButton(listIndex, render) {
       document
         .querySelector('.cardSpace')
         .parentNode.removeChild(document.querySelector('.cardSpace'));
-      addCardButton.parentNode.insertBefore(cardSpace(), addCardButton);
+      let cardSpaceDiv = cardSpace();
+      cardSpaceDiv.addEventListener('dragover', event => {
+        dataController.setFinishCardIndex(data[listIndex].cards.length);
+      });
+      addCardButton.parentNode.insertBefore(cardSpaceDiv, addCardButton);
     }
   });
 

@@ -86,7 +86,14 @@ function Card(cardData, cardIndex, listIndex, render) {
             cardIndex !== dataController.getStartCardIndex() ||
             listIndex !== dataController.getStartListIndex()
           ) {
-            dataController.setFinishCardIndex(cardIndex);
+            if (
+              dataController.getStartCardIndex() < cardIndex &&
+              listIndex == dataController.getStartListIndex()
+            ) {
+              dataController.setFinishCardIndex(cardIndex - 1);
+            } else {
+              dataController.setFinishCardIndex(cardIndex);
+            }
           }
         });
         card.parentNode.insertBefore(cardSpace, card);

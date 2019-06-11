@@ -11,7 +11,7 @@ function List(column, listIndex, render) {
 
   list.addEventListener('drag', event => {
     if (event.target.className !== 'cardShadow') {
-      dataController.setStartCardObject(column);
+      dataController.setStartDragListObject(column);
       dataController.setStartDragListIndex(listIndex);
       list.className = 'listShadow';
       list.style.height = `${list.clientHeight}px`;
@@ -60,34 +60,50 @@ function List(column, listIndex, render) {
       }
 
       dataController.setFinishDragListIndex(listIndex);
-      console.log(dataController.getFinishDragListIndex());
 
       if (document.querySelector('.listSpace')) {
         document
           .querySelector('.listSpace')
           .parentNode.removeChild(document.querySelector('.listSpace'));
       }
+      console.log('start', dataController.getStartDragListIndex());
+      console.log('finish', dataController.getFinishDragListIndex());
 
-      let listSpace = createElement('div', { className: 'listSpace', draggable: true });
-      listSpace.addEventListener('drop', event => {
-        console.log('space drop');
-        if (dataController.getFinishDragListIndex() > -1) {
-          data.splice(dataController.getStartDragListIndex(), 1);
-          data.splice(
-            dataController.getFinishDragListIndex(),
-            0,
-            dataController.getStartDragListObject(),
-          );
+      if (dataController.getStartDragListIndex() > -1) {
+        let listSpace = createElement('div', { className: 'listSpace', draggable: true });
+        listSpace.addEventListener('drop', event => {
+          // if (dataController.getFinishDragListIndex() == 0) {
+          //   console.log('pirmas');
+
+          //   data.splice(dataController.getStartDragListIndex(), 1);
+          //   data.unshift(dataController.getStartDragListObject());
+          // }
+
+          if (dataController.getFinishDragListIndex() > -1) {
+            console.log('antras');
+            data.splice(dataController.getStartDragListIndex(), 1);
+            data.splice(
+              dataController.getFinishDragListIndex(),
+              0,
+              dataController.getStartDragListObject(),
+            );
+          }
+          dataController.resetVariables();
+          dataController.setData(data);
+          render();
+        });
+        listSpace.addEventListener('dragover', event => {
+          event.preventDefault();
+        });
+        listSpace.addEventListener('dragenter', event => {
+          event.preventDefault();
+        });
+        listSpace.style.height = `${list.clientHeight}px`;
+        if (dataController.getStartDragListIndex() < listIndex) {
+          list.parentNode.insertBefore(listSpace, list.nextSibling);
+        } else {
+          list.parentNode.insertBefore(listSpace, list);
         }
-        dataController.resetVariables();
-        dataController.setData(data);
-        render();
-      });
-      listSpace.style.height = `${list.clientHeight}px`;
-      if (dataController.getStartDragListIndex() < listIndex) {
-        list.parentNode.insertBefore(listSpace, list.nextSibling);
-      } else {
-        list.parentNode.insertBefore(listSpace, list);
       }
     }
   });

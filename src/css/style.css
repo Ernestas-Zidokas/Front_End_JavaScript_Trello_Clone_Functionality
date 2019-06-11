@@ -27,12 +27,22 @@ body {
 }
 
 .list,
-.listInput {
+.listInput,
+.listShadow,
+.listSpace {
   position: relative;
   background-color: #dfe1e6;
   margin-right: 40px;
   width: 272px;
   border-radius: 3px;
+}
+
+.listShadow {
+  background: purple;
+}
+
+.listSpace {
+  background-color: rgba(0, 0, 0, 0.24);
 }
 
 .listTitleInput {

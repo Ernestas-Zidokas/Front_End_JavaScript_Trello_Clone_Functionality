@@ -19,7 +19,7 @@ function render() {
     clearColumns();
 
     data.forEach((column, listIndex) => {
-      let list = createList(column.title, listIndex, render);
+      let list = createList(column, listIndex, render);
       let cardContainer = createElement('div', { className: 'cardContainer' });
       columns.appendChild(list);
       column.cards.forEach((card, cardIndex) => {

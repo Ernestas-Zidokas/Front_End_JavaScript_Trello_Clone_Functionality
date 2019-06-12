@@ -66,8 +66,6 @@ function List(column, listIndex, render) {
           .querySelector('.listSpace')
           .parentNode.removeChild(document.querySelector('.listSpace'));
       }
-      console.log('start', dataController.getStartDragListIndex());
-      console.log('finish', dataController.getFinishDragListIndex());
 
       if (dataController.getStartDragListIndex() > -1) {
         let listSpace = createElement('div', { className: 'listSpace', draggable: true });
@@ -80,7 +78,6 @@ function List(column, listIndex, render) {
           // }
 
           if (dataController.getFinishDragListIndex() > -1) {
-            console.log('antras');
             data.splice(dataController.getStartDragListIndex(), 1);
             data.splice(
               dataController.getFinishDragListIndex(),
@@ -117,9 +114,14 @@ function List(column, listIndex, render) {
         dataController.getStartCardObject(),
       );
     }
-    if (dataController.getFinishListIndex() > -1 && dataController.getFinishCardIndex() == -1) {
-      data[dataController.getStartListIndex()].cards.splice(dataController.getStartCardIndex(), 1);
-      data[listIndex].cards.push(dataController.getStartCardObject());
+    if (dataController.getFinishDragListIndex() > -1) {
+      if (dataController.getFinishListIndex() > -1 && dataController.getFinishCardIndex() == -1) {
+        data[dataController.getStartListIndex()].cards.splice(
+          dataController.getStartCardIndex(),
+          1,
+        );
+        data[listIndex].cards.push(dataController.getStartCardObject());
+      }
     }
     if (dataController.getFinishListIndex() == -1 && dataController.getFinishCardIndex() > -1) {
       data[dataController.getStartListIndex()].cards.splice(dataController.getStartCardIndex(), 1);

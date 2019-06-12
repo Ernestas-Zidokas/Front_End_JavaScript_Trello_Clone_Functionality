@@ -80,23 +80,25 @@ function Card(cardData, cardIndex, listIndex, render) {
       }
 
       if (!document.querySelector('.cardSpace')) {
-        let cardSpace = cardSpaceFunction();
-        cardSpace.addEventListener('dragover', event => {
-          if (
-            cardIndex !== dataController.getStartCardIndex() ||
-            listIndex !== dataController.getStartListIndex()
-          ) {
+        if (dataController.getStartDragListIndex() == -1) {
+          let cardSpace = cardSpaceFunction();
+          cardSpace.addEventListener('dragover', event => {
             if (
-              dataController.getStartCardIndex() < cardIndex &&
-              listIndex == dataController.getStartListIndex()
+              cardIndex !== dataController.getStartCardIndex() ||
+              listIndex !== dataController.getStartListIndex()
             ) {
-              dataController.setFinishCardIndex(cardIndex - 1);
-            } else {
-              dataController.setFinishCardIndex(cardIndex);
+              if (
+                dataController.getStartCardIndex() < cardIndex &&
+                listIndex == dataController.getStartListIndex()
+              ) {
+                dataController.setFinishCardIndex(cardIndex - 1);
+              } else {
+                dataController.setFinishCardIndex(cardIndex);
+              }
             }
-          }
-        });
-        card.parentNode.insertBefore(cardSpace, card);
+          });
+          card.parentNode.insertBefore(cardSpace, card);
+        }
       }
     }
   });

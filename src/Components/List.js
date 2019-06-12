@@ -70,13 +70,6 @@ function List(column, listIndex, render) {
       if (dataController.getStartDragListIndex() > -1) {
         let listSpace = createElement('div', { className: 'listSpace', draggable: true });
         listSpace.addEventListener('drop', event => {
-          // if (dataController.getFinishDragListIndex() == 0) {
-          //   console.log('pirmas');
-
-          //   data.splice(dataController.getStartDragListIndex(), 1);
-          //   data.unshift(dataController.getStartDragListObject());
-          // }
-
           if (dataController.getFinishDragListIndex() > -1) {
             data.splice(dataController.getStartDragListIndex(), 1);
             data.splice(
@@ -89,12 +82,6 @@ function List(column, listIndex, render) {
           dataController.setData(data);
           render();
         });
-        listSpace.addEventListener('dragover', event => {
-          event.preventDefault();
-        });
-        listSpace.addEventListener('dragenter', event => {
-          event.preventDefault();
-        });
         listSpace.style.height = `${list.clientHeight}px`;
         if (dataController.getStartDragListIndex() < listIndex) {
           list.parentNode.insertBefore(listSpace, list.nextSibling);
@@ -104,7 +91,7 @@ function List(column, listIndex, render) {
       }
     }
   });
-
+  //List drag ends
   list.addEventListener('drop', event => {
     if (dataController.getFinishListIndex() > -1 && dataController.getFinishCardIndex() > -1) {
       data[dataController.getStartListIndex()].cards.splice(dataController.getStartCardIndex(), 1);
@@ -137,9 +124,32 @@ function List(column, listIndex, render) {
     render();
   });
 
-  let listTitle = createElement('h4', {
-    type: 'text',
-    textContent: column.title,
+  let listTitle = null;
+  if (data[listIndex].isEdit) {
+    listTitle = createElement('input', {
+      type: 'text',
+      value: column.title,
+      className: 'listTitleInput',
+    });
+    listTitle.addEventListener('keypress', event => {
+      if (event.keyCode === 13) {
+        data[listIndex].title = listTitle.value;
+        data[listIndex].isEdit = !data[listIndex].isEdit;
+        dataController.setData(data);
+        render();
+      }
+    });
+  } else {
+    listTitle = createElement('h4', {
+      type: 'text',
+      textContent: column.title,
+    });
+  }
+
+  listTitle.addEventListener('dblclick', event => {
+    data[listIndex].isEdit = !data[listIndex].isEdit;
+    dataController.setData(data);
+    render();
   });
 
   titleContainer.appendChild(listTitle);

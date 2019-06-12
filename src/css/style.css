@@ -45,13 +45,6 @@ body {
   background-color: rgba(0, 0, 0, 0.24);
 }
 
-.listTitleInput {
-  border: none;
-  box-shadow: inset 0 0 0 2px #0079bf;
-  display: block;
-  margin: 0;
-}
-
 .cardInput {
   overflow: hidden;
   overflow-wrap: break-word;
@@ -134,7 +127,7 @@ body {
 }
 
 .listTitleInput {
-  width: 240px;
+  width: 210px;
   margin-left: 5px;
   margin-top: 5px;
   color: #172b4d;
@@ -142,6 +135,10 @@ body {
   line-height: 20px;
   margin-bottom: 12px;
   padding: 4px 12px;
+}
+
+.titleContainer:hover {
+  cursor: pointer;
 }
 
 .card {

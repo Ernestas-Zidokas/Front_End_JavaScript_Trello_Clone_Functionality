@@ -29,6 +29,7 @@ function ListInput(render) {
     data.push({
       title: listTitle.value,
       cards: [],
+      isEdit: false,
     });
     columns.removeChild(list);
     dataController.setData(data);

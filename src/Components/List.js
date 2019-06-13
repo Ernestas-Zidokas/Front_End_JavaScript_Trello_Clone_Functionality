@@ -91,6 +91,9 @@ function List(column, listIndex, render) {
       }
     }
   });
+  list.addEventListener('dragend', event => {
+    render();
+  });
   //List drag ends
   list.addEventListener('drop', event => {
     if (dataController.getFinishListIndex() > -1 && dataController.getFinishCardIndex() > -1) {

@@ -44,7 +44,7 @@ function ListInput(render) {
   });
   exitListButton.addEventListener('click', event => {
     columns.removeChild(list);
-    AddAnotherListButton(render);
+    render();
   });
   listButtons.appendChild(exitListButton);
   list.appendChild(listButtons);

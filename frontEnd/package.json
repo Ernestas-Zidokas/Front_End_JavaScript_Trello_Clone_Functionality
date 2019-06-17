@@ -9,8 +9,8 @@
   },
   "scripts": {
     "clean": "rm -rf public build dist",
-    "build": "npm run clean && parcel build ./src/index.html --out-dir build --public-url ./ --no-source-maps",
-    "dev": "npm run clean && parcel ./src/index.html"
+    "build": "npm run clean && parcel build ./src/index.html ./src/login.html ./src/register.html --out-dir build --public-url ./ --no-source-maps",
+    "dev": "npm run clean && parcel ./src/index.html ./src/login.html ./src/register.html"
   },
   "repository": {
     "type": "git",

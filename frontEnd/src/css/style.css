@@ -146,13 +146,14 @@ body {
   position: relative;
   justify-content: space-between;
   align-items: center;
-  height: 15px;
+  min-height: 15px;
   padding: 6px 8px 6px;
   margin: 5px;
   margin-bottom: 10px;
   background-color: #fff;
   color: #172b4d;
   width: 240px;
+  word-break: break-all;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -215,8 +216,9 @@ body {
   display: none;
   font-size: 6px;
   cursor: pointer;
-  margin-top: 3px;
-  margin-bottom: 3px;
+  padding: 0px;
+  margin-left: 5px;
+  word-break: normal;
 }
 
 .moreModal {

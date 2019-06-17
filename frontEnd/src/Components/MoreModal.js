@@ -1,7 +1,7 @@
 const dataController = require('../DataController');
 const createElement = dataController.createElement;
 
-function MoreModal(listIndex, cardIndex, render) {
+function MoreModal(listIndex, cardIndex, render, draggableCard) {
   let data = dataController.getData();
   let moreModal = createElement('div', { className: 'moreModal' });
   let editCardButton = createElement('button', {
@@ -11,6 +11,8 @@ function MoreModal(listIndex, cardIndex, render) {
   });
 
   editCardButton.addEventListener('click', event => {
+    dataController.setIsCardDraggable(false);
+    dataController.setIsListDraggable(false);
     data[listIndex].cards[cardIndex].isEdit = !data[listIndex].cards[cardIndex].isEdit;
     dataController.setData(data);
     render();

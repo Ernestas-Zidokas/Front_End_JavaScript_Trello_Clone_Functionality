@@ -8,6 +8,11 @@ let finishListIndex = -1;
 let startDragListObject = null;
 let startDragListIndex = -1;
 let finishDragListIndex = -1;
+let isCardDraggable = true;
+let isListDraggable = true;
+
+let userToken = null;
+let userEmail = null;
 
 const getData = () => [...data];
 const getDataLocalStorage = () => window.localStorage.getItem('columns');
@@ -35,6 +40,16 @@ const setFinishListIndex = finishList => (finishListIndex = finishList);
 const setStartDragListObject = object => (startDragListObject = object);
 const setStartDragListIndex = dragListIndex => (startDragListIndex = dragListIndex);
 const setFinishDragListIndex = dragListIndex => (finishDragListIndex = dragListIndex);
+
+const getIsCardDraggable = () => isCardDraggable;
+const setIsCardDraggable = bool => (isCardDraggable = bool);
+const getIsListDraggable = () => isListDraggable;
+const setIsListDraggable = bool => (isListDraggable = bool);
+
+const setUserToken = token => (userToken = token);
+const getUserToken = () => userToken;
+const setUserEmail = email => (userEmail = email);
+const getUserEmail = () => userEmail;
 
 function resetVariables() {
   setStartCardObject(null);
@@ -80,4 +95,12 @@ module.exports = {
   setStartDragListObject,
   setStartDragListIndex,
   setFinishDragListIndex,
+  getIsCardDraggable,
+  setIsCardDraggable,
+  getIsListDraggable,
+  setIsListDraggable,
+  setUserToken,
+  getUserToken,
+  setUserEmail,
+  getUserEmail,
 };

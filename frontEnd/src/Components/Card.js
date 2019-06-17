@@ -8,13 +8,18 @@ function Card(cardData, cardIndex, listIndex, render) {
 
   let card = null;
   if (data[listIndex].cards[cardIndex].isEdit) {
-    card = createElement('input', {
+    card = createElement('textarea', {
       value: cardData.text,
       className: 'card',
-      draggable: true,
+      draggable: dataController.getIsCardDraggable(),
     });
+    // console.log(card.scrollHeight);
+
+    // card.style.height = card.scrollHeight + 'px';
     card.addEventListener('keypress', event => {
       if (event.keyCode === 13) {
+        dataController.setIsCardDraggable(true);
+        dataController.setIsListDraggable(true);
         data[listIndex].cards[cardIndex].text = card.value;
         data[listIndex].cards[cardIndex].isModalOpen = !data[listIndex].cards[cardIndex]
           .isModalOpen;

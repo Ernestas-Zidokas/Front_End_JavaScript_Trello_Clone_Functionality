@@ -6,7 +6,7 @@ function List(column, listIndex, render) {
   let data = dataController.getData();
   let list = createElement('div', {
     className: 'list',
-    draggable: true,
+    draggable: dataController.getIsListDraggable(),
   });
 
   list.addEventListener('drag', event => {
@@ -136,6 +136,7 @@ function List(column, listIndex, render) {
     });
     listTitle.addEventListener('keypress', event => {
       if (event.keyCode === 13) {
+        dataController.setIsListDraggable(true);
         data[listIndex].title = listTitle.value;
         data[listIndex].isEdit = !data[listIndex].isEdit;
         dataController.setData(data);
@@ -150,6 +151,7 @@ function List(column, listIndex, render) {
   }
 
   listTitle.addEventListener('dblclick', event => {
+    dataController.setIsListDraggable(false);
     data[listIndex].isEdit = !data[listIndex].isEdit;
     dataController.setData(data);
     render();

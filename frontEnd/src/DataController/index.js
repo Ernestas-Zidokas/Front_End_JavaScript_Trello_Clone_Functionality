@@ -1,4 +1,4 @@
-let data = [];
+let data = null;
 let startCardObject = null;
 let startCardIndex = -1;
 let startListIndex = -1;
@@ -14,7 +14,38 @@ let isListDraggable = true;
 let userToken = null;
 let userEmail = null;
 
-const getData = () => [...data];
+const getData = new Promise(function(resolve, reject) {
+  fetch('http://localhost:3000/api/getAllLists', {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'x-auth':
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDA0MTM1MGEzZjkzZjJkZDgxNTQxNGMiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTYwNTQ4MTgyfQ.7n4uaEjKBO28dYkA4KBfU-6TO5_SJJBApbBw0BAFAN0',
+    },
+  })
+    .then(responseList => responseList.json())
+    .then(resultList => {
+      fetch('http://localhost:3000/api/getAllCards', {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'x-auth':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDA0MTM1MGEzZjkzZjJkZDgxNTQxNGMiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTYwNTQ4MTgyfQ.7n4uaEjKBO28dYkA4KBfU-6TO5_SJJBApbBw0BAFAN0',
+        },
+      })
+        .then(responseCard => responseCard.json())
+        .then(resultCard => {
+          resultList.forEach((list, listIndex) => {
+            let sortedCardsByListArr = resultCard.filter(card => card.listBelongsId == list._id);
+            resultList[listIndex].cards = sortedCardsByListArr;
+          });
+          data = [...resultList];
+          resolve(data);
+        });
+    })
+    .catch(err => console.log(err));
+});
+
 const getDataLocalStorage = () => window.localStorage.getItem('columns');
 const getStartCardObject = () => (startCardObject ? { ...startCardObject } : startCardObject);
 const getStartCardIndex = () => startCardIndex;
@@ -27,10 +58,10 @@ const getStartDragListObject = () =>
 const getStartDragListIndex = () => startDragListIndex;
 const getFinishDragListIndex = () => finishDragListIndex;
 
-const setData = storageData => {
-  data = storageData;
-  window.localStorage.setItem('columns', JSON.stringify(storageData));
-};
+// const setData = storageData => {
+//   data = storageData;
+//   window.localStorage.setItem('columns', JSON.stringify(storageData));
+// };
 const setStartCardObject = object => (startCardObject = object);
 const setStartCardIndex = cardIndex => (startCardIndex = cardIndex);
 const setStartListIndex = listIndex => (startListIndex = listIndex);
@@ -81,7 +112,6 @@ module.exports = {
   getStartListIndex,
   getFinishCardIndex,
   getFinishListIndex,
-  setData,
   setStartCardObject,
   setStartCardIndex,
   setStartListIndex,

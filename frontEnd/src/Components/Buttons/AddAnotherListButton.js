@@ -3,18 +3,19 @@ const ListInput = require('../ListInput');
 const createElement = dataController.createElement;
 
 function AddAnotherListButton(render) {
-  let data = dataController.getData();
-  let addAnotherList = createElement('button', {
-    type: 'button',
-    textContent: data.length == 0 ? '➕ Add list' : '➕ Add another list',
-    className: 'addAnotherListButton',
-  });
-  addAnotherList.addEventListener('click', event => {
-    columns.removeChild(addAnotherList);
-    columns.appendChild(ListInput(render));
-  });
+  dataController.getData.then(data => {
+    let addAnotherList = createElement('button', {
+      type: 'button',
+      textContent: data.length == 0 ? '➕ Add list' : '➕ Add another list',
+      className: 'addAnotherListButton',
+    });
+    addAnotherList.addEventListener('click', event => {
+      columns.removeChild(addAnotherList);
+      columns.appendChild(ListInput(render));
+    });
 
-  columns.appendChild(addAnotherList);
+    columns.appendChild(addAnotherList);
+  });
 }
 
 module.exports = AddAnotherListButton;

@@ -11,7 +11,11 @@ mongoose.connect('mongodb://localhost:27017/trello', {
   useNewUrlParser: true,
 });
 
-app.use(cors());
+let corsOptions = {
+  exposedHeaders: ['x-auth'],
+};
+
+app.use(cors(corsOptions));
 app.use(
   bodyParser.urlencoded({
     extended: true,

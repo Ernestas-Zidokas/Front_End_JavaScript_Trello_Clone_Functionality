@@ -2,47 +2,56 @@ const dataController = require('../DataController');
 const createElement = dataController.createElement;
 
 function CardInput(listIndex, render) {
-  dataController.getData.then(data => {
-    let card = createElement('div');
-    let cardInput = createElement('textarea', {
-      type: 'text',
-      placeholder: 'Enter text for this card',
-      className: 'cardInput',
-    });
-    let cardButtons = createElement('div', {
-      className: 'cardButtons',
-    });
-
-    let addCardButton = createElement('button', {
-      type: 'button',
-      textContent: 'Add Card',
-      className: 'button',
-    });
-    addCardButton.addEventListener('click', event => {
-      data[listIndex].cards.push({
-        text: cardInput.value,
-        isModalOpen: false,
-        isEdit: false,
-      });
-      dataController.setData(data);
-      render();
-    });
-    cardButtons.appendChild(addCardButton);
-
-    let exitCardButton = createElement('button', {
-      type: 'button',
-      textContent: '✖️',
-      className: 'exitButton',
-    });
-    exitCardButton.addEventListener('click', event => {
-      render();
-    });
-    cardButtons.appendChild(exitCardButton);
-    card.appendChild(cardInput);
-    card.appendChild(cardButtons);
-
-    return card;
+  let data = dataController.getData();
+  let card = createElement('div');
+  let cardInput = createElement('input', {
+    type: 'text',
+    placeholder: 'Enter text for this card',
+    className: 'cardInput',
   });
+  let cardButtons = createElement('div', {
+    className: 'cardButtons',
+  });
+
+  let addCardButton = createElement('button', {
+    type: 'button',
+    textContent: 'Add Card',
+    className: 'button',
+  });
+  addCardButton.addEventListener('click', event => {
+    fetch('http://localhost:3000/api/createCard', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'x-auth': window.localStorage.getItem('token'),
+      },
+      body: JSON.stringify({
+        text: cardInput.value,
+        listId: data[listIndex]._id,
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        render();
+      })
+      .catch(err => console.log(err));
+  });
+  cardButtons.appendChild(addCardButton);
+
+  let exitCardButton = createElement('button', {
+    type: 'button',
+    textContent: '✖️',
+    className: 'exitButton',
+  });
+  exitCardButton.addEventListener('click', event => {
+    render();
+  });
+  cardButtons.appendChild(exitCardButton);
+  card.appendChild(cardInput);
+  card.appendChild(cardButtons);
+
+  return card;
 }
 
 module.exports = CardInput;

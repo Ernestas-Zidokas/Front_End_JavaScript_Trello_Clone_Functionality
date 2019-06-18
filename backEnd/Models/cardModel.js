@@ -10,6 +10,11 @@ let cardSchema = new mongoose.Schema({
     required: true,
     default: false,
   },
+  isModalOpen: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: new Date(),

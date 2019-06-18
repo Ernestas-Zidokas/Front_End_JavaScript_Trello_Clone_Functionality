@@ -18,15 +18,18 @@ function loginUser() {
       password: pass,
     }),
   })
-    .then(response => {
-      console.log(response);
-      return response.json();
+    .then(res => {
+      console.log(window.localStorage.setItem('token', res.headers.get('x-auth')));
+      window.localStorage.setItem('token', res.headers.get('x-auth'));
+      return res.json();
     })
-    .then(result => {
-      console.log(result);
-      dataController.setUserEmail(result.email);
-      dataController.setUserToken(result.tokens[0].token);
-      window.location.href = './index.html';
+    .then(body => {
+      if (typeof body !== 'string') {
+        // window.location.href = './index.html';
+        console.log(body);
+      } else {
+        console.log(body);
+      }
     })
     .catch(err => console.log(err));
 }

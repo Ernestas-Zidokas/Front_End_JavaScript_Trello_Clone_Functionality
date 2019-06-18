@@ -10,10 +10,10 @@ window.addEventListener('load', event => {
   render();
 });
 
-const render = () => {
-  dataController.getData.then(data => {
-    console.log(data);
+function render() {
+  dataController.getDataFromDb.then(data => {
     clearColumns();
+    dataController.setData(data);
     data.forEach((column, listIndex) => {
       let list = createList(column, listIndex, render);
       let cardContainer = createElement('div', { className: 'cardContainer' });
@@ -30,7 +30,7 @@ const render = () => {
   // columns.appendChild(
   //   createElement('p', { className: 'loggedInAs', textContent: dataController.getUserEmail() }),
   // );
-};
+}
 
 function clearColumns() {
   columns.innerHTML = '';

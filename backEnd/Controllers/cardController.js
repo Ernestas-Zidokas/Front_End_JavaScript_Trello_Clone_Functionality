@@ -6,11 +6,14 @@ let createCard = (request, response) => {
   card.text = data.text;
   card.listBelongsId = data.listId;
   card.creator = request.user._id;
-  card.save().then(item => {
-    response.json(item).catch(e => {
+  card
+    .save()
+    .then(item => {
+      response.json(item);
+    })
+    .catch(e => {
       response.status(400).json(e);
     });
-  });
 };
 
 let getAllCards = (request, response) => {
@@ -21,34 +24,20 @@ let getAllCards = (request, response) => {
   });
 };
 
-let deleteCard = (req, res) => {
-  let data = req.body;
+let deleteCardById = (req, res) => {
+  let id = req.params.id;
   CardModel.deleteOne({
+    _id: id,
     creator: req.user._id,
-    _id: data._id,
   })
-    .then(item => {
-      res.json(item);
-    })
+    .then(response => res.json(response))
     .catch(e => {
       res.status(400).json(e);
     });
 };
 
-// let deleteItemById = (req, res) => {
-//   let id = req.param('id');
-//   ToDoModel.deleteOne({
-//     _id: id,
-//     creator: req.user._id,
-//   }).then(response => {
-//     res.json(response).catch(e => {
-//       res.status(400).json(e);
-//     });
-//   });
-// };
-
 let getCard = (req, res) => {
-  let id = req.param('id');
+  let id = req.params.id;
   CardModel.findOne({
     _id: id,
     creator: req.user._id,
@@ -61,9 +50,25 @@ let getCard = (req, res) => {
     });
 };
 
+let toogleItem = (req, res) => {
+  let id = req.params.id;
+  CardModel.findOne({
+    _id: id,
+    creator: req.user._id,
+  })
+    .then(item => {
+      item.checked = !item.checked;
+      item.save().then(savedItem => res.json(savedItem));
+    })
+    .catch(e => {
+      res.status(400).json(e);
+    });
+};
+
 module.exports = {
   createCard,
   getAllCards,
-  deleteCard,
+  deleteCardById,
+  toogleItem,
   getCard,
 };

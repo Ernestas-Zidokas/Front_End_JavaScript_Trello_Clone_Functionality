@@ -75,7 +75,7 @@ let logout = (req, res) => {
 
 let getUser = (request, response) => {
   let data = request.body;
-  UserModel.findOne({ email: data.email }).then(user => {
+  UserModel.find({ email: data.email }).then(user => {
     response.json(user);
   });
 };

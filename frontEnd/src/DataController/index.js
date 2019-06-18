@@ -14,13 +14,12 @@ let isListDraggable = true;
 let userToken = null;
 let userEmail = null;
 
-const getData = new Promise(function(resolve, reject) {
+const getDataFromDb = new Promise(function(resolve, reject) {
   fetch('http://localhost:3000/api/getAllLists', {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      'x-auth':
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDA0MTM1MGEzZjkzZjJkZDgxNTQxNGMiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTYwNTQ4MTgyfQ.7n4uaEjKBO28dYkA4KBfU-6TO5_SJJBApbBw0BAFAN0',
+      'x-auth': window.localStorage.getItem('token'),
     },
   })
     .then(responseList => responseList.json())
@@ -29,8 +28,7 @@ const getData = new Promise(function(resolve, reject) {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          'x-auth':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDA0MTM1MGEzZjkzZjJkZDgxNTQxNGMiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTYwNTQ4MTgyfQ.7n4uaEjKBO28dYkA4KBfU-6TO5_SJJBApbBw0BAFAN0',
+          'x-auth': window.localStorage.getItem('token'),
         },
       })
         .then(responseCard => responseCard.json())
@@ -46,6 +44,8 @@ const getData = new Promise(function(resolve, reject) {
     .catch(err => console.log(err));
 });
 
+const getData = () => data;
+const setData = dataFromDB => (data = dataFromDB);
 const getDataLocalStorage = () => window.localStorage.getItem('columns');
 const getStartCardObject = () => (startCardObject ? { ...startCardObject } : startCardObject);
 const getStartCardIndex = () => startCardIndex;
@@ -58,10 +58,6 @@ const getStartDragListObject = () =>
 const getStartDragListIndex = () => startDragListIndex;
 const getFinishDragListIndex = () => finishDragListIndex;
 
-// const setData = storageData => {
-//   data = storageData;
-//   window.localStorage.setItem('columns', JSON.stringify(storageData));
-// };
 const setStartCardObject = object => (startCardObject = object);
 const setStartCardIndex = cardIndex => (startCardIndex = cardIndex);
 const setStartListIndex = listIndex => (startListIndex = listIndex);
@@ -93,8 +89,8 @@ function resetVariables() {
   setFinishDragListIndex(-1);
 }
 
-function createElement(type, params) {
-  let element = document.createElement(type);
+function createElement(tag, params) {
+  let element = document.createElement(tag);
   if (params) {
     Object.entries(params).forEach(parameter => {
       element[parameter[0]] = parameter[1];
@@ -105,6 +101,8 @@ function createElement(type, params) {
 }
 
 module.exports = {
+  setData,
+  getDataFromDb,
   getData,
   getDataLocalStorage,
   getStartCardObject,

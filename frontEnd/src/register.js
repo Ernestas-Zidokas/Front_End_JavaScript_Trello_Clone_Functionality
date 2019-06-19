@@ -19,7 +19,7 @@ function registerUser() {
   })
     .then(response => response.json())
     .then(result => {
-      if (!result) {
+      if (result) {
         if (pass != passAgain) {
           console.log('pass nesutampa');
           return;

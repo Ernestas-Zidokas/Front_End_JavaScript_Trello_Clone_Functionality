@@ -1,7 +1,7 @@
 const dataController = require('../DataController');
 const createElement = dataController.createElement;
 
-function MoreModal(listIndex, cardIndex, render, draggableCard) {
+function MoreModal(listIndex, cardIndex, render) {
   let data = dataController.getData();
   let moreModal = createElement('div', { className: 'moreModal' });
   let editCardButton = createElement('button', {

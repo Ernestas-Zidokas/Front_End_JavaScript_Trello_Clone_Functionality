@@ -38,6 +38,7 @@ const getDataFromDb = new Promise(function(resolve, reject) {
             resultList[listIndex].cards = sortedCardsByListArr;
           });
           data = [...resultList];
+          console.log('renewed data from DB');
           resolve(data);
         });
     })
@@ -100,7 +101,13 @@ function createElement(tag, params) {
   return element;
 }
 
+function clearColumns() {
+  columns.innerHTML = '';
+  console.log('cleared the UI');
+}
+
 module.exports = {
+  clearColumns,
   setData,
   getDataFromDb,
   getData,

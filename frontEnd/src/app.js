@@ -10,9 +10,11 @@ window.addEventListener('load', event => {
   render();
 });
 
-function render() {
+const render = () => {
   dataController.getDataFromDb.then(data => {
-    clearColumns();
+    console.log(data);
+
+    dataController.clearColumns();
     dataController.setData(data);
     data.forEach((column, listIndex) => {
       let list = createList(column, listIndex, render);
@@ -25,13 +27,12 @@ function render() {
       list.appendChild(cardContainer);
       columns.appendChild(list);
     });
+    console.log('generated UI');
     addAnotherListButton(render);
   });
   // columns.appendChild(
   //   createElement('p', { className: 'loggedInAs', textContent: dataController.getUserEmail() }),
   // );
-}
+};
 
-function clearColumns() {
-  columns.innerHTML = '';
-}
+module.exports = render;

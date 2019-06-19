@@ -27,6 +27,10 @@ let cardSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
+  position: {
+    type: Number,
+    required: true,
+  },
 });
 
 let CardModel = mongoose.model('card', cardSchema);

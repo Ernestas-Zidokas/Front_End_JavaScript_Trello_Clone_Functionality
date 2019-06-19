@@ -5,6 +5,7 @@ let createCard = (request, response) => {
   let card = new CardModel();
   card.text = data.text;
   card.listBelongsId = data.listId;
+  card.position = data.position;
   card.creator = request.user._id;
   card
     .save()
@@ -65,10 +66,30 @@ let toogleItem = (req, res) => {
     });
 };
 
+let updateCardPosition = (req, res) => {
+  let data = req.body;
+  let id = req.params.id;
+  CardModel.findOne({
+    _id: id,
+    creator: req.user._id,
+  })
+    .then(item => {
+      item.position = data.position;
+      if (data.listBelongsId) {
+        item.listBelongsId = data.listBelongsId;
+      }
+      item.save().then(savedItem => res.json(savedItem));
+    })
+    .catch(e => {
+      res.status(400).json(e);
+    });
+};
+
 module.exports = {
   createCard,
   getAllCards,
   deleteCardById,
   toogleItem,
   getCard,
+  updateCardPosition,
 };

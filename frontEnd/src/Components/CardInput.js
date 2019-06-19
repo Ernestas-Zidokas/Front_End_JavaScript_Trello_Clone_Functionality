@@ -1,5 +1,6 @@
 const dataController = require('../DataController');
 const createElement = dataController.createElement;
+const renderFN = require('../app');
 
 function CardInput(listIndex, render) {
   let data = dataController.getData();
@@ -29,6 +30,7 @@ function CardInput(listIndex, render) {
       body: JSON.stringify({
         text: cardInput.value,
         listId: data[listIndex]._id,
+        position: data[listIndex].cards.length,
       }),
     })
       .then(res => res.json())

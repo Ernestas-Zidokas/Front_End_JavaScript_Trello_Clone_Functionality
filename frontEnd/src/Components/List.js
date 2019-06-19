@@ -107,34 +107,108 @@ function List(column, listIndex, render) {
   //List drag ends
   list.addEventListener('drop', event => {
     if (dataController.getFinishListIndex() > -1 && dataController.getFinishCardIndex() > -1) {
-      data[dataController.getStartListIndex()].cards.splice(dataController.getStartCardIndex(), 1);
-      data[listIndex].cards.splice(
-        dataController.getFinishCardIndex(),
-        0,
-        dataController.getStartCardObject(),
-      );
+      // data[dataController.getStartListIndex()].cards.splice(dataController.getStartCardIndex(), 1);
+      // data[listIndex].cards.splice(
+      //   dataController.getFinishCardIndex(),
+      //   0,
+      //   dataController.getStartCardObject(),
+      // );
+      fetch(
+        `http://localhost:3000/api/updateCardPosition/${
+          data[dataController.getStartListIndex()].cards[dataController.getStartCardIndex()]._id
+        }`,
+        {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'x-auth': window.localStorage.getItem('token'),
+          },
+          body: JSON.stringify({
+            listBelongsId: data[dataController.getFinishListIndex()]._id,
+            position:
+              dataController.getFinishCardIndex() == -1 ? 0 : dataController.getFinishCardIndex(),
+          }),
+        },
+      )
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          render();
+        })
+        .catch(err => console.log(err));
     }
     if (dataController.getFinishDragListIndex() > -1) {
       if (dataController.getFinishListIndex() > -1 && dataController.getFinishCardIndex() == -1) {
-        data[dataController.getStartListIndex()].cards.splice(
-          dataController.getStartCardIndex(),
-          1,
-        );
-        data[listIndex].cards.push(dataController.getStartCardObject());
+        //   data[dataController.getStartListIndex()].cards.splice(
+        //     dataController.getStartCardIndex(),
+        //     1,
+        //   );
+        //   data[listIndex].cards.push(dataController.getStartCardObject());
+        fetch(
+          `http://localhost:3000/api/updateCardPosition/${
+            data[dataController.getStartListIndex()].cards[dataController.getStartCardIndex()]._id
+          }`,
+          {
+            method: 'PUT',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'x-auth': window.localStorage.getItem('token'),
+            },
+            body: JSON.stringify({
+              listBelongsId: data[dataController.getFinishListIndex()]._id,
+              position: data[dataController.getFinishListIndex()].cards.length,
+            }),
+          },
+        )
+          .then(res => res.json())
+          .then(data => {
+            console.log(data);
+            render();
+          })
+          .catch(err => console.log(err));
       }
     }
     if (dataController.getFinishListIndex() == -1 && dataController.getFinishCardIndex() > -1) {
-      data[dataController.getStartListIndex()].cards.splice(dataController.getStartCardIndex(), 1);
-      data[listIndex].cards.splice(
-        dataController.getFinishCardIndex(),
-        0,
-        dataController.getStartCardObject(),
-      );
+      // data[dataController.getStartListIndex()].cards.splice(dataController.getStartCardIndex(), 1);
+      // data[listIndex].cards.splice(
+      //   dataController.getFinishCardIndex(),
+      //   0,
+      //   dataController.getStartCardObject(),
+      // );
+      fetch(
+        `http://localhost:3000/api/updateCardPosition/${
+          data[dataController.getStartListIndex()].cards[dataController.getStartCardIndex()]._id
+        }`,
+        {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'x-auth': window.localStorage.getItem('token'),
+          },
+          body: JSON.stringify({
+            position: dataController.getFinishCardIndex(),
+          }),
+        },
+      )
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          render();
+        })
+        .catch(err => console.log(err));
     }
 
     dataController.resetVariables();
-    dataController.setData(data);
     render();
+    // console.log('finish List ID', data[dataController.getFinishListIndex()]._id);
+    console.log(
+      'dragged card id',
+      data[dataController.getStartListIndex()].cards[dataController.getStartCardIndex()],
+    );
+    console.log('finished card index', dataController.getFinishCardIndex());
   });
 
   let listTitle = null;

@@ -38,12 +38,11 @@ function ListInput(render) {
     })
       .then(response => response.json())
       .then(result => {
-        console.log(result);
+        render();
       })
       .catch(err => console.log(err));
 
     columns.removeChild(list);
-    render();
   });
   listButtons.appendChild(addListButton);
 

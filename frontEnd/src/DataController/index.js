@@ -35,10 +35,12 @@ const getDataFromDb = new Promise(function(resolve, reject) {
         .then(resultCard => {
           resultList.forEach((list, listIndex) => {
             let sortedCardsByListArr = resultCard.filter(card => card.listBelongsId == list._id);
-            resultList[listIndex].cards = sortedCardsByListArr;
+            resultList[listIndex].cards = sortedCardsByListArr.sort(
+              (a, b) => a.position - b.position,
+            );
           });
           data = [...resultList];
-          console.log('renewed data from DB');
+          // console.log('renewed data from DB');
           resolve(data);
         });
     })
@@ -103,7 +105,7 @@ function createElement(tag, params) {
 
 function clearColumns() {
   columns.innerHTML = '';
-  console.log('cleared the UI');
+  // console.log('cleared the UI');
 }
 
 module.exports = {

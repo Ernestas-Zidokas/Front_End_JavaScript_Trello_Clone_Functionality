@@ -11,6 +11,8 @@ window.addEventListener('load', event => {
 });
 
 const render = () => {
+  // console.log('render function');
+
   dataController.getDataFromDb.then(data => {
     console.log(data);
 
@@ -27,8 +29,8 @@ const render = () => {
       list.appendChild(cardContainer);
       columns.appendChild(list);
     });
-    console.log('generated UI');
     addAnotherListButton(render);
+    // console.log('generated UI');
   });
   // columns.appendChild(
   //   createElement('p', { className: 'loggedInAs', textContent: dataController.getUserEmail() }),

@@ -107,12 +107,6 @@ function List(column, listIndex, render) {
   //List drag ends
   list.addEventListener('drop', event => {
     if (dataController.getFinishListIndex() > -1 && dataController.getFinishCardIndex() > -1) {
-      // data[dataController.getStartListIndex()].cards.splice(dataController.getStartCardIndex(), 1);
-      // data[listIndex].cards.splice(
-      //   dataController.getFinishCardIndex(),
-      //   0,
-      //   dataController.getStartCardObject(),
-      // );
       fetch(
         `http://localhost:3000/api/updateCardPosition/${
           data[dataController.getStartListIndex()].cards[dataController.getStartCardIndex()]._id
@@ -132,19 +126,37 @@ function List(column, listIndex, render) {
         },
       )
         .then(res => res.json())
-        .then(data => {
-          console.log(data);
-          render();
-        })
+        .then(data => {})
         .catch(err => console.log(err));
+
+      for (
+        let i = dataController.getFinishCardIndex();
+        i < data[dataController.getFinishListIndex()].cards.length;
+        i++
+      ) {
+        fetch(
+          `http://localhost:3000/api/updateCardPosition/${
+            data[dataController.getFinishListIndex()].cards[i]._id
+          }`,
+          {
+            method: 'PUT',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'x-auth': window.localStorage.getItem('token'),
+            },
+            body: JSON.stringify({
+              position: i + 1,
+            }),
+          },
+        )
+          .then(res => res.json())
+          .then(data => {})
+          .catch(err => console.log(err));
+      }
     }
     if (dataController.getFinishDragListIndex() > -1) {
       if (dataController.getFinishListIndex() > -1 && dataController.getFinishCardIndex() == -1) {
-        //   data[dataController.getStartListIndex()].cards.splice(
-        //     dataController.getStartCardIndex(),
-        //     1,
-        //   );
-        //   data[listIndex].cards.push(dataController.getStartCardObject());
         fetch(
           `http://localhost:3000/api/updateCardPosition/${
             data[dataController.getStartListIndex()].cards[dataController.getStartCardIndex()]._id
@@ -163,20 +175,11 @@ function List(column, listIndex, render) {
           },
         )
           .then(res => res.json())
-          .then(data => {
-            console.log(data);
-            render();
-          })
+          .then(data => {})
           .catch(err => console.log(err));
       }
     }
     if (dataController.getFinishListIndex() == -1 && dataController.getFinishCardIndex() > -1) {
-      // data[dataController.getStartListIndex()].cards.splice(dataController.getStartCardIndex(), 1);
-      // data[listIndex].cards.splice(
-      //   dataController.getFinishCardIndex(),
-      //   0,
-      //   dataController.getStartCardObject(),
-      // );
       fetch(
         `http://localhost:3000/api/updateCardPosition/${
           data[dataController.getStartListIndex()].cards[dataController.getStartCardIndex()]._id
@@ -195,20 +198,59 @@ function List(column, listIndex, render) {
       )
         .then(res => res.json())
         .then(data => {
-          console.log(data);
-          render();
+          // console.log(data);
         })
         .catch(err => console.log(err));
+
+      if (dataController.getStartCardIndex() < dataController.getFinishCardIndex()) {
+        console.log('zemyn');
+        for (let i = dataController.getFinishCardIndex(); i > data[listIndex].cards.length; i--) {
+          console.log(data[listIndex].cards[i]);
+
+          //   fetch(`http://localhost:3000/api/updateCardPosition/${data[listIndex].cards[i]._id}`, {
+          //     method: 'PUT',
+          //     headers: {
+          //       Accept: 'application/json',
+          //       'Content-Type': 'application/json',
+          //       'x-auth': window.localStorage.getItem('token'),
+          //     },
+          //     body: JSON.stringify({
+          //       position: i,
+          //     }),
+          //   })
+          //     .then(res => res.json())
+          //     .then(data => {
+          //       // console.log(data);
+          //     })
+          //     .catch(err => console.log(err));
+        }
+      }
+      if (dataController.getStartCardIndex() > dataController.getFinishCardIndex()) {
+        console.log('aukstyn');
+        for (let i = dataController.getFinishCardIndex(); i < data[listIndex].cards.length; i++) {
+          console.log(data[listIndex].cards[i]);
+          //   fetch(`http://localhost:3000/api/updateCardPosition/${data[listIndex].cards[i]._id}`, {
+          //     method: 'PUT',
+          //     headers: {
+          //       Accept: 'application/json',
+          //       'Content-Type': 'application/json',
+          //       'x-auth': window.localStorage.getItem('token'),
+          //     },
+          //     body: JSON.stringify({
+          //       position: i + 1,
+          //     }),
+          //   })
+          //     .then(res => res.json())
+          //     .then(data => {
+          //       // console.log(data);
+          //     })
+          //     .catch(err => console.log(err));
+        }
+      }
     }
 
     dataController.resetVariables();
-    render();
-    // console.log('finish List ID', data[dataController.getFinishListIndex()]._id);
-    console.log(
-      'dragged card id',
-      data[dataController.getStartListIndex()].cards[dataController.getStartCardIndex()],
-    );
-    console.log('finished card index', dataController.getFinishCardIndex());
+    // render();
   });
 
   let listTitle = null;

@@ -14,8 +14,6 @@ const render = () => {
   // console.log('render function');
 
   dataController.getDataFromDb.then(data => {
-    console.log(data);
-
     dataController.clearColumns();
     dataController.setData(data);
     data.forEach((column, listIndex) => {

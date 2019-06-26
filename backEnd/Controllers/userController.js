@@ -9,11 +9,14 @@ let register = (request, response) => {
     let user = new UserModel();
     user.email = data.email;
     user.password = data.password;
-    user.save().then(user => {
-      response.json(user).catch(e => {
+    user
+      .save()
+      .then(user => {
+        response.json(user);
+      })
+      .catch(e => {
         response.status(400).json(e);
       });
-    });
   } else {
     response.status(401).json('passwords dont match');
   }

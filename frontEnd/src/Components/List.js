@@ -26,6 +26,21 @@ function List(column, listIndex, render) {
   });
 
   deleteListButton.addEventListener('click', event => {
+    fetch(`http://localhost:3000/api/deleteCardsByListId/${data[listIndex]._id}/`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'x-auth': window.localStorage.getItem('token'),
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        render();
+      })
+      .catch(err => console.log(err));
+
     fetch(`http://localhost:3000/api/deleteListById/${data[listIndex]._id}/`, {
       method: 'DELETE',
       headers: {
@@ -90,7 +105,7 @@ function List(column, listIndex, render) {
           }
           dataController.resetVariables();
           dataController.setData(data);
-          render();
+          // render();
         });
         listSpace.style.height = `${list.clientHeight}px`;
         if (dataController.getStartDragListIndex() < listIndex) {
@@ -106,6 +121,7 @@ function List(column, listIndex, render) {
   });
   //List drag ends
   list.addEventListener('drop', event => {
+    //card is dragged to another list
     if (dataController.getFinishListIndex() > -1 && dataController.getFinishCardIndex() > -1) {
       fetch(
         `http://localhost:3000/api/updateCardPosition/${
@@ -155,6 +171,7 @@ function List(column, listIndex, render) {
           .catch(err => console.log(err));
       }
     }
+    //card is dragged on another list, but placed in the back
     if (dataController.getFinishDragListIndex() > -1) {
       if (dataController.getFinishListIndex() > -1 && dataController.getFinishCardIndex() == -1) {
         fetch(
@@ -179,6 +196,7 @@ function List(column, listIndex, render) {
           .catch(err => console.log(err));
       }
     }
+    //card is dragged inside same list
     if (dataController.getFinishListIndex() == -1 && dataController.getFinishCardIndex() > -1) {
       fetch(
         `http://localhost:3000/api/updateCardPosition/${
@@ -201,50 +219,50 @@ function List(column, listIndex, render) {
           // console.log(data);
         })
         .catch(err => console.log(err));
-
+      //card is dragged inside same list down
       if (dataController.getStartCardIndex() < dataController.getFinishCardIndex()) {
-        console.log('zemyn');
-        for (let i = dataController.getFinishCardIndex(); i > data[listIndex].cards.length; i--) {
-          console.log(data[listIndex].cards[i]);
-
-          //   fetch(`http://localhost:3000/api/updateCardPosition/${data[listIndex].cards[i]._id}`, {
-          //     method: 'PUT',
-          //     headers: {
-          //       Accept: 'application/json',
-          //       'Content-Type': 'application/json',
-          //       'x-auth': window.localStorage.getItem('token'),
-          //     },
-          //     body: JSON.stringify({
-          //       position: i,
-          //     }),
-          //   })
-          //     .then(res => res.json())
-          //     .then(data => {
-          //       // console.log(data);
-          //     })
-          //     .catch(err => console.log(err));
+        for (let i = dataController.getFinishCardIndex(); i > 0; i--) {
+          fetch(`http://localhost:3000/api/updateCardPosition/${data[listIndex].cards[i]._id}`, {
+            method: 'PUT',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'x-auth': window.localStorage.getItem('token'),
+            },
+            body: JSON.stringify({
+              position: i - 1,
+            }),
+          })
+            .then(res => res.json())
+            .then(data => {
+              // console.log(data);
+            })
+            .catch(err => console.log(err));
         }
       }
+      //card is dragged inside same list up
       if (dataController.getStartCardIndex() > dataController.getFinishCardIndex()) {
-        console.log('aukstyn');
-        for (let i = dataController.getFinishCardIndex(); i < data[listIndex].cards.length; i++) {
-          console.log(data[listIndex].cards[i]);
-          //   fetch(`http://localhost:3000/api/updateCardPosition/${data[listIndex].cards[i]._id}`, {
-          //     method: 'PUT',
-          //     headers: {
-          //       Accept: 'application/json',
-          //       'Content-Type': 'application/json',
-          //       'x-auth': window.localStorage.getItem('token'),
-          //     },
-          //     body: JSON.stringify({
-          //       position: i + 1,
-          //     }),
-          //   })
-          //     .then(res => res.json())
-          //     .then(data => {
-          //       // console.log(data);
-          //     })
-          //     .catch(err => console.log(err));
+        for (
+          let i = dataController.getFinishCardIndex();
+          i < dataController.getStartCardIndex();
+          i++
+        ) {
+          fetch(`http://localhost:3000/api/updateCardPosition/${data[listIndex].cards[i]._id}`, {
+            method: 'PUT',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'x-auth': window.localStorage.getItem('token'),
+            },
+            body: JSON.stringify({
+              position: i + 1,
+            }),
+          })
+            .then(res => res.json())
+            .then(data => {
+              // console.log(data);
+            })
+            .catch(err => console.log(err));
         }
       }
     }

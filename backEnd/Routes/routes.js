@@ -12,6 +12,10 @@ router.route('/createCard').post(middleware.authenticate, cardController.createC
 router.route('/getAllCards').get(middleware.authenticate, cardController.getAllCards);
 router.route('/deleteCardById/:id/').delete(middleware.authenticate, cardController.deleteCardById);
 router
+  .route('/deleteCardsByListId/:id/')
+  .delete(middleware.authenticate, cardController.deleteCardsByListId);
+
+router
   .route('/updateCardPosition/:id/')
   .put(middleware.authenticate, cardController.updateCardPosition);
 

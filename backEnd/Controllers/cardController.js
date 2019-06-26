@@ -37,6 +37,18 @@ let deleteCardById = (req, res) => {
     });
 };
 
+let deleteCardsByListId = (req, res) => {
+  let id = req.params.id;
+  CardModel.deleteMany({
+    listBelongsId: id,
+    creator: req.user._id,
+  })
+    .then(response => res.json(response))
+    .catch(e => {
+      res.status(400).json(e);
+    });
+};
+
 let getCard = (req, res) => {
   let id = req.params.id;
   CardModel.findOne({
@@ -92,4 +104,5 @@ module.exports = {
   toogleItem,
   getCard,
   updateCardPosition,
+  deleteCardsByListId,
 };

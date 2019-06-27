@@ -174,6 +174,7 @@ function List(column, listIndex, render) {
     //card is dragged on another list, but placed in the back
     if (dataController.getFinishDragListIndex() > -1) {
       if (dataController.getFinishListIndex() > -1 && dataController.getFinishCardIndex() == -1) {
+        console.log('placed in the back');
         fetch(
           `http://localhost:3000/api/updateCardPosition/${
             data[dataController.getStartListIndex()].cards[dataController.getStartCardIndex()]._id
@@ -221,7 +222,9 @@ function List(column, listIndex, render) {
         .catch(err => console.log(err));
       //card is dragged inside same list down
       if (dataController.getStartCardIndex() < dataController.getFinishCardIndex()) {
-        for (let i = dataController.getFinishCardIndex(); i > 0; i--) {
+        console.log('traukiu i apacia');
+        for (let i = dataController.getFinishCardIndex() - 1; i > 0; i--) {
+          console.log(i);
           fetch(`http://localhost:3000/api/updateCardPosition/${data[listIndex].cards[i]._id}`, {
             method: 'PUT',
             headers: {
